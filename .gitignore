@@ -1,0 +1,16 @@
+# Python generated files
+__pycache__/
+*.py[cod]
+
+# Jupyter generated files
+.ipynb_checkpoints/
+
+# Local editor settings
+.vscode/
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Uncomment when the assignment PDF should no longer be tracked.
+# Assignment_2.pdf
