@@ -11,7 +11,7 @@ class Host:
         self.is_isolated = False     # True if all network connections have been severed
 
     def __repr__(self): # check/change later
-        return f"{self.name}(val={self.value}, comp={self.is_compromised}, patch={self.is_patched}, iso={self.is_isolated})"
+        return f"{self.name}(value={self.value}, compromised={self.is_compromised}, patch={self.is_patched}, isolated={self.is_isolated})"
 
     def clone(self):
         h = copy.copy(self) # Create a shallow copy of the Host instance
@@ -45,7 +45,7 @@ class GameState:
         self.exfiltrated = False           # True once the attacker exfiltrates from H5
 
     def __repr__(self):
-        return f"GameState(ply={self.ply_count}, player={self.current_player}, budget={self.defender_budget}, zero_day={self.attacker_has_zero_day}, exfiltrated={self.exfiltrated})"
+        return f"GameState(plies used={self.ply_count}, current player={self.current_player}, defender budget={self.defender_budget}, zero_day available={self.attacker_has_zero_day}, target exfiltrated={self.exfiltrated})"
 
     def clone(self):
         s = copy.copy(self) # Create a shallow copy of the GameState instance
