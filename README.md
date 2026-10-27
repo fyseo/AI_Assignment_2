@@ -4,77 +4,103 @@
 
 ## Overview
 
-This project models a two-player, zero-sum turn-based cybersecurity game between an **Attacker** (Minimizer) and a **Defender** (Maximizer) on a 10-host enterprise network (`H0`–`H9`). Starting from the Internet entry point (`H0`), the Attacker attempts to compromise connected machines and exfiltrate the crown jewels database on `H5`, while the Defender allocates a limited defence budget to patch, isolate, or restore hosts.
+This project models a two-player, zero-sum cybersecurity game between an
+**Attacker** (Minimizer) and a **Defender** (Maximizer) on a 10-host enterprise
+network (`H0`–`H9`). Starting from the Internet entry point (`H0`), the
+Attacker attempts to compromise connected machines and exfiltrate the
+crown-jewels database on `H5`. The Defender uses a limited budget to patch,
+isolate, or restore hosts.
 
-The repository implements the complete game environment alongside three adversarial search algorithms to select optimal actions:
-- **Minimax (Full Depth)**
-- **Depth-Limited Minimax (`depth = 3`)**
-- **Alpha-Beta Pruning (Full Depth & `depth = 3`)**
+The repository implements the game environment and compares:
+
+- Full-depth Minimax
+- Depth-limited Minimax (`depth = 3`)
+- Full-depth Alpha-Beta Pruning
+- Depth-limited Alpha-Beta Pruning (`depth = 3`)
 
 ## Project Structure
 
 ```text
 .
-├── game.py          # Task 1: Host and GameState classes (network topology, legal moves, state updates, utility)
-├── algorithms.py    # Task 2: Minimax, Depth-Limited Minimax, Alpha-Beta Pruning, heuristic evaluation, and move ordering
-├── main.ipynb       # Main Jupyter Notebook running Task 1 test cases and Task 2 algorithm comparisons
-└── README.md        # Project documentation, setup instructions, and AI assistance disclosure
+├── game.py          # Task 1: Game model, legal moves, state updates, and utility
+├── algorithms.py    # Task 2: Minimax, Alpha-Beta, heuristic evaluation, and move ordering
+├── main.ipynb       # Task 1 demonstrations and Task 2 algorithm comparison
+└── README.md        # Project documentation and AI assistance disclosure
 ```
 
-## Requirements & Installation
+## Requirements and Installation
 
-The core game model (`game.py`) and search algorithms (`algorithms.py`) rely **exclusively on the Python 3 Standard Library** (`copy`, `math`, `time`), so no external packages are required to import or run the modules.
+The game model and search algorithms use only the Python 3 Standard Library.
+The notebook requires Python 3.8 or later and Jupyter Notebook, JupyterLab, or
+VS Code with the Jupyter extension.
 
-To run the interactive notebook (`main.ipynb`), you only need:
-- **Python 3.8+**
-- **Jupyter Notebook / JupyterLab** (or VS Code with the Jupyter extension)
+Clone the repository:
 
-### Setup
+```bash
+git clone https://github.com/fyseo/AI_Assignment_2.git
+cd AI_Assignment_2
+```
 
-1. Clone the repository (or download the project folder):
-   ```bash
-   git clone <your-repo-url>
-   cd <your-repo-folder>
-   ```
-2. *(Optional)* If you do not have Jupyter installed:
-   ```bash
-   pip install notebook
-   ```
+If Jupyter is not installed:
+
+```bash
+pip install notebook
+```
 
 ## How to Run
 
-### Option 1: Using VS Code or Jupyter Notebook (Recommended)
-1. Open the project folder in **VS Code** or launch Jupyter from your terminal:
-   ```bash
-   jupyter notebook main.ipynb
-   ```
-2. Run all cells from top to bottom (**Run All**).
-   - **Task 1 Cells:** Initialize the 10-host network and execute the three deliverable test cases:
-     1. *Test Case 1:* Legal moves, host isolation, budget exhaustion, and verification of the Section 2.6 Worked Example (`U = -30`).
-     2. *Test Case 2:* Patching (`Patch`), Zero-Day bypass (`ZeroDay`), and host restoration (`Restore`).
-     3. *Test Case 3:* Terminal conditions comparing early Attacker victory (`Exfiltrate` at Ply 7, `U = -244`) against a 10-ply Defender hold (`Isolate H5`, `U = -135`).
-   - **Task 2 Cells:** Run Full Minimax, Depth-Limited Minimax (`depth = 3`), Full Alpha-Beta, and Depth-Limited Alpha-Beta (`depth = 3`) from the initial state and print the runtime, expanded nodes, pruned nodes, best action, and utility comparison.
+### Notebook
 
-### Option 2: Running Directly from Python CLI
-You can also test the game and algorithms directly from a terminal:
+Open `main.ipynb` in VS Code or launch it with:
+
+```bash
+jupyter notebook main.ipynb
+```
+
+Run the cells from top to bottom. The notebook includes:
+
+1. **Task 1:** Three test cases covering legal actions, isolation, budget
+   exhaustion, patching, zero-day attacks, restoration, exfiltration, utility,
+   and terminal conditions.
+2. **Task 2:** Full-depth and depth-limited Minimax and Alpha-Beta searches
+   from the initial state, including runtime, expanded nodes, pruned nodes,
+   selected actions, and returned values.
+
+Full-depth Minimax explores a large search tree and may take several minutes
+to finish. Full-depth Alpha-Beta produces the same exact result while usually
+expanding substantially fewer nodes.
+
+### Python CLI
+
+The algorithms can also be run directly from a terminal:
+
 ```bash
 python -c "from game import GameState; from algorithms import alpha_beta; print(alpha_beta(GameState(), depth=3))"
 ```
 
-## Summary of Experimental Results (Initial State — Ply 0)
+## Summary of Experimental Results
+
+The following results were recorded from the initial state at ply 0:
 
 | Algorithm | Search Depth | Best Action | Returned Value | Expanded Nodes | Pruned Nodes | Runtime (s) |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: |
-| **Minimax** | Full (10 plies) | `('Exploit', 'H1')` | `-44` | 2,402,797 | 0 | ~190.19s |
-| **Depth-Limited Minimax** | 3 plies | `('Exploit', 'H1')` | `-20` | 61 | 0 | ~0.0057s |
-| **Alpha-Beta Pruning** | Full (10 plies) | `('Exploit', 'H1')` | `-44` | 14,858 | 13,519 | ~0.6615s |
-| **Depth-Limited Alpha-Beta** | 3 plies | `('Exploit', 'H1')` | `-20` | 28 | 81 | ~0.0014s |
+| **Minimax** | Full (10 plies) | `('Exploit', 'H1')` | `-44` | 2,402,797 | 0 | 175.412958 |
+| **Depth-Limited Minimax** | 3 plies | `('Exploit', 'H1')` | `-20` | 61 | 0 | 0.008497 |
+| **Alpha-Beta Pruning** | Full (10 plies) | `('Exploit', 'H1')` | `-44` | 14,858 | 13,519 | 0.652546 |
+| **Depth-Limited Alpha-Beta** | 3 plies | `('Exploit', 'H1')` | `-20` | 28 | 81 | 0.001688 |
 
-## AI Assistant & Outside Code Disclosure
+Runtime values are representative measurements from one run and may vary
+depending on hardware, Python version, and system load. Node counts can also
+change if the action-ordering strategy changes.
+
+## AI Assistant and Outside Code Disclosure
 
 In accordance with the assignment submission guidelines:
-- **Outside Code:** No external third-party libraries or pre-existing game engines were used; all game rules and search algorithms were implemented from scratch using Python's built-in modules (`copy`, `math`, `time`) and course lecture materials.
-- **AI Assistant Usage:** An AI assistant was used during development for:
-  - Adding and refining inline code comments across `game.py`, `algorithms.py`, and `main.ipynb`.
-  - Generating the structured test case scenarios and print formatting for Task 1 and Task 2 in `main.ipynb`.
-  - Writing and formatting the Markdown section headers, comparison tables, conclusion section, and this `README.md`.
+
+- **Outside Code:** No external third-party libraries or pre-existing game
+  engines were used. The game rules and search algorithms were implemented
+  from scratch using Python's built-in modules and course lecture materials.
+- **AI Assistant Usage:** An AI assistant was used during development to help
+  refine comments, structure the Task 1 and Task 2 notebook demonstrations,
+  format the Markdown sections and comparison tables, and prepare this
+  README.
