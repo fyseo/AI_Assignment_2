@@ -30,7 +30,7 @@ def evaluate(state):
     return score
 
 
-def order_actions(state, actions):
+def order_actions(actions):
     # Search decisive actions first so Alpha-Beta can find useful bounds early.
     # The original order of actions within each group is preserved.
     ordered_actions = []
@@ -69,7 +69,7 @@ def minimax(state, depth=None):
     expanded_nodes += 1
     # Keep None for full search; otherwise reduce the remaining search depth.
     next_depth = None if depth is None else depth - 1
-    actions = order_actions(state, state.get_legal_actions())
+    actions = order_actions(state.get_legal_actions())
 
     # The Defender maximizes defender utility.
     if state.current_player == "Defender":
@@ -111,7 +111,7 @@ def alpha_beta(state, depth=3, alpha=-math.inf, beta=math.inf):
     expanded_nodes += 1
     # Keep None for full search; otherwise reduce the remaining search depth.
     next_depth = None if depth is None else depth - 1
-    actions = order_actions(state, state.get_legal_actions())
+    actions = order_actions(state.get_legal_actions())
 
     # Defender node: keep the highest value and improve the alpha bound.
     if state.current_player == "Defender":
